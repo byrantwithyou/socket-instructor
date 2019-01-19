@@ -48,9 +48,12 @@ function get_file_content(filepath) {
 
 
 let io = require("socket.io")(http);
-io.on("disconnected", function(socket) {
-  console.log("a user connected");
+io.on("connection", function(socket) {
+  socket.on("circuit change", function(comp, pos, flag) {
+    io.of("/tutor").emit("display change", comp, pos, flag);
+  });
 })
+
 app.listen(3000, function() {
   console.log("listening on 3000");
 })
