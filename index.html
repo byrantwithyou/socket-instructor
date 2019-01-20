@@ -4,15 +4,44 @@
     <title>fritzing-tutor</title>
   </head>
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    let socket = io.connect("http://localhost:3000/tutor");
-    socket.on("hello", function(comp, pos, flag){
-      console.log(comp);
-      console.log(pos);
-      console.log(flag);
-    });
-  </script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <body>
     <h1>Tutor</h1>
+    <div id="container" style="width: 1000px;margin: 0;position: relative;">
+      <img style="position: absolute;width: 100%;z-index: 100; top:0px; left: 0px;" src="breadboard/breadboard2.svg">
+      <img src="breadboard/bmp180_breadboard.svg" style="position: absolute; top: 90px; left: 114px; z-index: 200">
+    </div>
   </body>
+  <style>
+  </style>
+  <script>
+    let socket = io.connect("http://localhost:3000/tutor");
+    socket.on("circuit change", function(comp, pos, size, id, flag){
+      if (flag === "add") {
+        let width = size.split(",")[0];
+        let height = size.split(",")[1];
+        let posx = pos.split(",")[0];
+        let posy = pos.split(",")[1];
+        let newSvg = $("<img src=" + comp + ">");
+        $("#container").append(newSvg);
+        newSvg.attr("id", id);
+        if (size) {
+          newSvg.attr("width", width).attr("height", height);
+        }
+        let js_svg = document.getElementById(id);
+        js_svg.style.left = "150px";
+        js_svg.style.top = "60px";
+        js_svg.style.position = "absolute";
+        js_svg.style["z-index"] = 200;
+        
+      }
+     else {
+       
+         $("#" + id).remove();
+       
+     }
+    });
+    
+    
+    </script>
 </html>

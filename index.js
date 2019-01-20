@@ -32,18 +32,23 @@ function get_file_content(filepath) {
 }
 
 
-io.of("/tutor").on("connection", function(_) {
+io.of("/tutor").on("connection", function(socket) {
   console.log("tutor connected");
+  socket.on("disconnect", function(_) {
+    console.log("tutor disconnect");
+  })
 });
 
 io.of("/student").on("connection", function(socket) {
   console.log("student connected");
-  socket.on("hello", function(comp, pos, flag) {
-    io.of("/tutor").emit("hello", comp, pos, flag);
+  socket.on("disconnect", function(_) {
+    console.log("student disconnect");
   })
-  socket.emit("fuck");
+  socket.on("circuit change", function(comp, pos, size, id, flag) {
+    io.of("/tutor").emit("circuit change", comp, pos, size, id, flag);
+  })
+  socket.emit("ready");
 })
-
 
 http.listen(3000, function () {
   console.log('listening on *:3000');
