@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>fritzing-student</title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  let socket = io.connect("http://localhost:3000/student");
+  socket.on("fuck", function() {
+    this.emit("hello", 1, 2, 3);
+  });
+</script>
+
+<body>
+  <h1>Student</h1>
+</body>
+
+</html>

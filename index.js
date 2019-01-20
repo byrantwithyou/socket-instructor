@@ -5,27 +5,12 @@ let fs = require("fs");
 let path = require("path");
 let bodyParser = require("body-parser");
 let multer = require("multer");
+let io = require('socket.io')(http);
 
 
 app.use(express.static(path.join(__dirname, '/')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ dest: '/tmp/' }).array('file'));
-
-
-//store file in the web server
-app.post('/', function (req, res) {
-  res.end();
-  let des_file = __dirname + "/" + req.files[0].originalname;
-  fs.readFile(req.files[0].path, function (err, data) {
-    fs.writeFile(des_file, data, function (err) {
-      if (err) {
-        console.log(err);
-      }
-      else {
-      }
-    });
-  });
-})
 
 
 //load files and set content type properly
@@ -47,14 +32,19 @@ function get_file_content(filepath) {
 }
 
 
-let io = require("socket.io")(http);
-io.on("connection", function(socket) {
-  socket.on("circuit change", function(comp, pos, flag) {
-    io.of("/tutor").emit("display change", comp, pos, flag);
-  });
+io.of("/tutor").on("connection", function(_) {
+  console.log("tutor connected");
+});
+
+io.of("/student").on("connection", function(socket) {
+  console.log("student connected");
+  socket.on("hello", function(comp, pos, flag) {
+    io.of("/tutor").emit("hello", comp, pos, flag);
+  })
+  socket.emit("fuck");
 })
 
-app.listen(3000, function() {
-  console.log("listening on 3000");
-})
 
+http.listen(3000, function () {
+  console.log('listening on *:3000');
+});
