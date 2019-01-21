@@ -32,33 +32,34 @@ function get_file_content(filepath) {
 }
 
 
-// io.of("/tutor").on("connection", function(socket) {
-//   console.log("tutor connected");
-//   socket.on("disconnect", function(_) {
-//     console.log("tutor disconnect");
-//   })
-// });
+io.of("/tutor").on("connection", function(socket) {
+  console.log("tutor connected");
+  socket.on("disconnect", function(_) {
+    console.log("tutor disconnect");
+  })
+});
 
-io.on("connection", function(socket) {
+io.of("/student").on("connection", function(socket) {
   console.log("student connected");
   socket.on("disconnect", function(_) {
     console.log("student disconnect");
   })
-  //id : #前面的 ##1
-  //type； #后面的 ##1
-  //location: pin33D ##2
-  //flag: 1:add 0:delete  ##3
-  //TODO: 1 for change ()
+  socket.emit("ready");
   socket.on("circuit change", function(idtype, pos, flag) {
     let id = idtype.split("#")[0];
-    let type = idtype.split("#")[1];
-    
-    console.log(idtype);
-    console.log(pos);
+    let type = "breadboard/23LCV1024_1.svg";
+    let posy = pos[pos.length - 1];
+    let posx = pos.substring(3, pos.length - 1);
+    console.log(id);
+    console.log(type);
+    console.log(posx);
+    console.log(posy);
     console.log(flag);
-    //io.of("/tutor").emit("circuit change", comp, pos, size, id, flag);
+    io.of("/tutor").emit("circuit change", id, type, posx, posy, flag);
   });
-  //socket.emit("ready");
 })
 
-http.listen(3000, "0.0.0.0");
+
+http.listen(3000, function() {
+  console.log("listening at 3000");
+});

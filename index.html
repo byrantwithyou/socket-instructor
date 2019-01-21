@@ -9,8 +9,8 @@
     <h1>Tutor</h1>
     <div id="container" style="width: 650px;margin: 0;position: relative;">
       <img style="position: absolute;width: 100%;z-index: 100; top:0px; left: 0px;" src="breadboard/breadboard2.svg">
-      <img src="breadboard/11LC040_breadboard.svg" style="position: absolute; top: 89px; left: 11px; z-index: 200">
-      <img src="breadboard/11LC010_breadboard.svg" style="position:absolute; top: 9px; left: 111px; z-index: 200">
+      <!--img src="breadboard/11LC040_breadboard.svg" style="position: absolute; top: 89px; left: 11px; z-index: 200">
+      <img src="breadboard/11LC010_breadboard.svg" style="position:absolute; top: 9px; left: 111px; z-index: 200"-->
       <!--img src="breadboard/Adafruit_Atmega32u4_Breakout.svg" style="position:absolute; top: 49px; left: 201px; z-index: 200"-->
 
     </div>
@@ -19,20 +19,15 @@
   </style>
   <script>
     let socket = io.connect("http://localhost:3000/tutor");
-    socket.on("circuit change", function(comp, pos, size, id, flag){
-      if (flag === "add") {
-        let width = size.split(",")[0];
-        let height = size.split(",")[1];
-        let posx = pos.split(",")[0];
-        let posy = pos.split(",")[1];
-        let newSvg = $("<img src=" + comp + ">");
+    socket.on("circuit change", function(id, type, posx, posy, flag){
+      console.log(id, type, posx, posy, flag);
+      if (flag === "1") {
+        $("#" + id).remove();
+        let newSvg = $("<img src=" + type + ">");
         $("#container").append(newSvg);
         newSvg.attr("id", id);
-        if (size) {
-          newSvg.attr("width", width).attr("height", height);
-        }
         let js_svg = document.getElementById(id);
-        let left_px = 11 + (posx - 1) * 10;
+        let left_px = 11 + (Number(posx) - 1) * 10;
         let top_px = {
           "F": "89px",
           "G": "79px",
