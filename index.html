@@ -11,7 +11,7 @@
       <img style="position: absolute;width: 100%;z-index: 100; top:0px; left: 0px;" src="breadboard/breadboard2.svg">
       <!--img src="breadboard/11LC040_breadboard.svg" style="position: absolute; top: 89px; left: 11px; z-index: 200">
       <img src="breadboard/11LC010_breadboard.svg" style="position:absolute; top: 9px; left: 111px; z-index: 200"-->
-      <!--img src="breadboard/Adafruit_Atmega32u4_Breakout.svg" style="position:absolute; top: 49px; left: 201px; z-index: 200"-->
+      <img src="breadboard/resistor_220.svg" style="position:absolute; top: 86px; left: 115px; z-index: 200">
 
     </div>
   </body>
@@ -27,22 +27,22 @@
         $("#container").append(newSvg);
         newSvg.attr("id", id);
         let js_svg = document.getElementById(id);
-        let left_px = 11 + (Number(posx) - 1) * 10;
+        let left_px = 15 + (Number(posx) - 1) * 10;
         let top_px = {
-          "F": "89px",
-          "G": "79px",
-          "H": "69px",
-          "I": "59px",
-          "J": "49px",
-          "A": "159px",
-          "B": "149px",
-          "C": "139px",
-          "D": "129px",
-          "E": "119px",
-          "W": "199px",
-          "X": "189px",
-          "Y": "19px",
-          "Z": "9px"
+          "F": "86px",
+          "G": "76px",
+          "H": "66px",
+          "I": "56px",
+          "J": "46px",
+          "A": "156px",
+          "B": "146px",
+          "C": "136px",
+          "D": "126px",
+          "E": "116px",
+          "W": "196px",
+          "X": "186px",
+          "Y": "16px",
+          "Z": "6px"
         }
         js_svg.style.left = left_px + "px";
         js_svg.style.top = top_px[posy];

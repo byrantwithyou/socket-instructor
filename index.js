@@ -47,14 +47,9 @@ io.of("/student").on("connection", function(socket) {
   socket.emit("ready");
   socket.on("circuit change", function(idtype, pos, flag) {
     let id = idtype.split("#")[0];
-    let type = "breadboard/23LCV1024_1.svg";
+    let type = "breadboard/resistor_220.svg";
     let posy = pos[pos.length - 1];
     let posx = pos.substring(3, pos.length - 1);
-    console.log(id);
-    console.log(type);
-    console.log(posx);
-    console.log(posy);
-    console.log(flag);
     io.of("/tutor").emit("circuit change", id, type, posx, posy, flag);
   });
 })
