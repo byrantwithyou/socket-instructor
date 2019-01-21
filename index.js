@@ -32,24 +32,33 @@ function get_file_content(filepath) {
 }
 
 
-io.of("/tutor").on("connection", function(socket) {
-  console.log("tutor connected");
-  socket.on("disconnect", function(_) {
-    console.log("tutor disconnect");
-  })
-});
+// io.of("/tutor").on("connection", function(socket) {
+//   console.log("tutor connected");
+//   socket.on("disconnect", function(_) {
+//     console.log("tutor disconnect");
+//   })
+// });
 
-io.of("/student").on("connection", function(socket) {
+io.on("connection", function(socket) {
   console.log("student connected");
   socket.on("disconnect", function(_) {
     console.log("student disconnect");
   })
-  socket.on("circuit change", function(comp, pos, size, id, flag) {
-    io.of("/tutor").emit("circuit change", comp, pos, size, id, flag);
-  })
-  socket.emit("ready");
+  //id : #前面的 ##1
+  //type； #后面的 ##1
+  //location: pin33D ##2
+  //flag: 1:add 0:delete  ##3
+  //TODO: 1 for change ()
+  socket.on("circuit change", function(idtype, pos, flag) {
+    let id = idtype.split("#")[0];
+    let type = idtype.split("#")[1];
+    
+    console.log(idtype);
+    console.log(pos);
+    console.log(flag);
+    //io.of("/tutor").emit("circuit change", comp, pos, size, id, flag);
+  });
+  //socket.emit("ready");
 })
 
-http.listen(3000, function () {
-  console.log('listening on *:3000');
-});
+http.listen(3000, "0.0.0.0");
